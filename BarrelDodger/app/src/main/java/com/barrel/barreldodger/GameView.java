@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -32,6 +33,7 @@ public class GameView extends SurfaceView implements Runnable {
         player = new Player(context, screenX, screenY);
         surfaceHolder = getHolder();
         paint = new Paint();
+
         barrel = new Barrel(context, screenX, screenY);
     }
 
@@ -48,6 +50,9 @@ public class GameView extends SurfaceView implements Runnable {
     private void update() {
         player.update();
         barrel.update(player.getSpeed());
+        if(Rect.intersects(player.getCollisionrect(),barrel.getCollisionRect())) {
+            System.out.println("Intersected");
+        }
     }
 
     // Draws objects to canvas

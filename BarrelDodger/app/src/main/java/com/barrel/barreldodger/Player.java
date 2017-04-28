@@ -3,6 +3,7 @@ package com.barrel.barreldodger;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 /**
  * Created by conno_000 on 4/22/2017.
@@ -13,6 +14,8 @@ public class Player {
     private int x;
     private int y;
     private int speed = 0;
+
+    private Rect collisionrect;
 
     // When user tapping screen, boost diddy kong
     private boolean boosting;
@@ -37,6 +40,8 @@ public class Player {
 
         // Not boosting at first
         boosting = false;
+
+        collisionrect=new Rect(x,y,bitmap.getWidth(),bitmap.getHeight());
     }
 
     Player(Context context, int screenX, int screenY) {
@@ -51,6 +56,8 @@ public class Player {
 
         // Not boosting at first
         boosting = false;
+
+        collisionrect = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
     }
 
     void startBoosting() {
@@ -84,8 +91,15 @@ public class Player {
         if (y > bottomY) {
             y = bottomY;
         }
+        collisionrect.left=x;
+        collisionrect.top=y;
+        collisionrect.right=x+bitmap.getWidth();
+        collisionrect.bottom=y+bitmap.getHeight();
     }
 
+    Rect getCollisionrect(){
+        return collisionrect;
+    }
     Bitmap getBitmap() {
         return bitmap;
     }
