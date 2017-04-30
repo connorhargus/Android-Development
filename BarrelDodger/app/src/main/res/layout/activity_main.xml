@@ -19,4 +19,17 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:id="@+id/pauseMusic"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/holo_green_dark"
+        android:text="@string/Pause"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold" />
+
 </RelativeLayout>

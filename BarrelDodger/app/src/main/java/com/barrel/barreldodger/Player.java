@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 
 // Created by conno_000 on 4/22/2017.
 
@@ -29,6 +30,9 @@ public class Player {
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
 
+    // boosting music
+    MediaPlayer mp_touch;
+
     Player(Context context, int screenX, int screenY) {
         x = 75;
         y = 50;
@@ -43,6 +47,8 @@ public class Player {
         boosting = false;
 
         collisionrect = new Rect(x, y, bitmap.getWidth(), bitmap.getHeight());
+
+        mp_touch = MediaPlayer.create(context, R.raw.touch); // initialize boost music
     }
 
     void startBoosting() {
@@ -56,9 +62,14 @@ public class Player {
         if (boosting) {
             // Increase upward speed
             speed += 4;
+            mp_touch.start();
+            mp_touch.setLooping(true);
         } else {
             // Decrease upward speed
             speed -= 5;
+            if(mp_touch.isPlaying()) {
+                mp_touch.pause();
+            }
         }
         // Keep speed under MAX_SPEED, over MIN_SPEED
         if (speed > MAX_SPEED) {

@@ -45,7 +45,7 @@ public class Barrel {
 
         // Gives the barrel a random speed and y coordinate
         Random generator = new Random();
-        speed = 20;
+        speed = generator.nextInt(7) + 10;
         x = screenX;
         y = generator.nextInt(topY - bitmap.getHeight());
     }
@@ -54,7 +54,7 @@ public class Barrel {
     void update(int playerSpeed) {
 
         // Decreasing x coordinate so that barrel will move right to left
-        x -= playerSpeed;
+        x -= playerSpeed; // more challenging; barrel will move faster with user movement
         x -= speed;
         // If the enemy reaches the left edge, move back to the right
         if (x < leftX - bitmap.getWidth()) {
