@@ -9,8 +9,7 @@ import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import java.io.IOException;
+import android.widget.Toast;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -20,9 +19,10 @@ public class GameView extends SurfaceView implements Runnable {
     private Paint paint;
     private SurfaceHolder surfaceHolder;
     private Barrel[] barrels;
-    private int barrelCount = 3;
+    private int barrelCount = 4, totalLives, totalScore;
     MediaPlayer mp_collision;
     Canvas canvas;
+    private static boolean gameOver = false;
 
     public GameView(Context context, int screenX, int screenY) {
         super(context);
@@ -30,6 +30,7 @@ public class GameView extends SurfaceView implements Runnable {
         surfaceHolder = getHolder();
         paint = new Paint();
         barrels = new Barrel[barrelCount];
+        gameOver = false;
         for(int i=0; i<barrelCount; i++){
             barrels[i] = new Barrel(context, screenX, screenY);
         }
@@ -49,11 +50,19 @@ public class GameView extends SurfaceView implements Runnable {
     // Updates positions of player and barrels
     private void update(){
         player.update();
+        totalScore++; // increase total score
         for(int i = 0; i < barrelCount; i++){
             barrels[i].update(player.getSpeed());
             if(Rect.intersects(player.getCollisionrect(), barrels[i].getCollisionrect())) {
                 barrels[i].setX(-200);
+                totalLives--; // decreases available lives
                 mp_collision.start();
+                totalScore -= 50;
+                if (totalScore < 0) { totalScore = 0; };
+                if (totalLives == 0){
+                    totalLives = 10;
+                    gameOver = true; // can go back to main menu
+                }
             }
         }
     }

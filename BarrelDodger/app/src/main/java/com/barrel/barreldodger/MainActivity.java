@@ -61,7 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         // Play button starts PlayActivity
-        mp_background.stop();
+        mp_background.pause();
+        pauseMusic.setTextColor(Color.RED);
+        String message = "Game started!";
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, PlayActivity.class));
     }
 
