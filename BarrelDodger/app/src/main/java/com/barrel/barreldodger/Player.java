@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
-/**
- * Created by conno_000 on 4/22/2017.
- */
+// Created by conno_000 on 4/22/2017.
 
 public class Player {
     private Bitmap bitmap;
@@ -31,19 +29,6 @@ public class Player {
     private final int MIN_SPEED = 1;
     private final int MAX_SPEED = 20;
 
-    public Player(Context context) {
-        x = 75;
-        y = 50;
-        speed = 1;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.donkey);
-        bitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, false);
-
-        // Not boosting at first
-        boosting = false;
-
-        collisionrect=new Rect(x,y,bitmap.getWidth(),bitmap.getHeight());
-    }
-
     Player(Context context, int screenX, int screenY) {
         x = 75;
         y = 50;
@@ -51,8 +36,8 @@ public class Player {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.donkey);
         bitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, false);
 
-        bottomY = screenY - bitmap.getHeight();
-        topY = 0;
+        bottomY = 0;
+        topY = screenY - bitmap.getHeight();
 
         // Not boosting at first
         boosting = false;
@@ -85,21 +70,22 @@ public class Player {
 
         // Adjust position, within bounds
         y -= speed + GRAVITY;
-        if (y < topY) {
-            y = topY;
-        }
-        if (y > bottomY) {
+        if (y < bottomY) {
             y = bottomY;
+        }
+        if (y > topY) {
+            y = topY;
         }
         collisionrect.left=x;
         collisionrect.top=y;
-        collisionrect.right=x+bitmap.getWidth();
-        collisionrect.bottom=y+bitmap.getHeight();
+        collisionrect.right=x + bitmap.getWidth();
+        collisionrect.bottom=y + bitmap.getHeight();
     }
 
     Rect getCollisionrect(){
         return collisionrect;
     }
+
     Bitmap getBitmap() {
         return bitmap;
     }

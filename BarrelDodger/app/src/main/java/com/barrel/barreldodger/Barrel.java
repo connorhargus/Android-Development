@@ -7,9 +7,7 @@ import android.graphics.Rect;
 
 import java.util.Random;
 
-/**
- * Created by conno_000 on 4/22/2017.
- */
+// Created by conno_000 on 4/22/2017.
 
 public class Barrel {
 
@@ -50,21 +48,19 @@ public class Barrel {
         speed = 20;
         x = screenX;
         y = generator.nextInt(topY - bitmap.getHeight());
-
     }
 
     // Update the barrel's location according to barrel and player speeds
     void update(int playerSpeed) {
 
         // Decreasing x coordinate so that barrel will move right to left
+        x -= playerSpeed;
         x -= speed;
-
         // If the enemy reaches the left edge, move back to the right
         if (x < leftX - bitmap.getWidth()) {
             Random generator = new Random();
-//            speed += 1;
+            speed = generator.nextInt(10) + 10;
             x = rightX;
-
             y = generator.nextInt(topY - bitmap.getHeight());
         }
 
@@ -74,7 +70,11 @@ public class Barrel {
         collisionRect.bottom = y + bitmap.getHeight();
     }
 
-    Rect getCollisionRect(){
+    void setX(int x) {
+        this.x = x;
+    }
+
+    Rect getCollisionrect() {
         return collisionRect;
     }
 
@@ -93,5 +93,4 @@ public class Barrel {
     public int getSpeed() {
         return speed;
     }
-
 }
