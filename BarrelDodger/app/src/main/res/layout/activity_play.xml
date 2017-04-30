@@ -10,15 +10,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.barrel.barreldodger.PlayActivity">
 
-    <TextView
-        android:id="@+id/score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Score"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

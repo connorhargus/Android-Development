@@ -9,9 +9,8 @@ import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
 
-// Created by conno_000 on 4/22/2017.
+import java.io.IOException;
 
 public class GameView extends SurfaceView implements Runnable {
 
@@ -24,15 +23,12 @@ public class GameView extends SurfaceView implements Runnable {
     private int barrelCount = 3;
     MediaPlayer mp_collision;
     Canvas canvas;
-    TextView score;
-    int playerScore = 0;
 
     public GameView(Context context, int screenX, int screenY) {
         super(context);
         player = new Player(context, screenX, screenY);
         surfaceHolder = getHolder();
         paint = new Paint();
-        score = (TextView) findViewById(R.id.score);
         barrels = new Barrel[barrelCount];
         for(int i=0; i<barrelCount; i++){
             barrels[i] = new Barrel(context, screenX, screenY);
@@ -42,7 +38,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run(){
         while (playing) {
             update();
             draw();
@@ -51,16 +47,12 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     // Updates positions of player and barrels
-    private void update() {
+    private void update(){
         player.update();
-        playerScore += 2;
-        //score.setText("Score: (" + Integer.toString(playerScore) + ")");
         for(int i = 0; i < barrelCount; i++){
             barrels[i].update(player.getSpeed());
             if(Rect.intersects(player.getCollisionrect(), barrels[i].getCollisionrect())) {
                 barrels[i].setX(-200);
-                playerScore -= 5;
-                //score.setText("Score: (" + Integer.toString(playerScore) + ")");
                 mp_collision.start();
             }
         }

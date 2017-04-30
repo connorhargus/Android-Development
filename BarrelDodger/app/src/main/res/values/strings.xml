@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BarrelDodger</string>
-    <string name="Score">Score: 0</string>
-    <string name="reset">Reset Scores</string>
+    <string name="Score">Score: (0)</string>
     <string name="Pause">Music</string>
 </resources>

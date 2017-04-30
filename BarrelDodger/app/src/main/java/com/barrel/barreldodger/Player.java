@@ -6,8 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 
-// Created by conno_000 on 4/22/2017.
-
 public class Player {
     private Bitmap bitmap;
     private int x;
@@ -31,7 +29,7 @@ public class Player {
     private final int MAX_SPEED = 20;
 
     // boosting music
-    MediaPlayer mp_touch;
+    private MediaPlayer mp_touch;
 
     Player(Context context, int screenX, int screenY) {
         x = 75;
@@ -58,7 +56,7 @@ public class Player {
         boosting = false;
     }
 
-    void update() {
+    void update(){
         if (boosting) {
             // Increase upward speed
             speed += 4;
@@ -68,7 +66,12 @@ public class Player {
             // Decrease upward speed
             speed -= 5;
             if(mp_touch.isPlaying()) {
-                mp_touch.pause();
+                mp_touch.stop();
+                try{
+                    mp_touch.prepare();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         // Keep speed under MAX_SPEED, over MIN_SPEED
