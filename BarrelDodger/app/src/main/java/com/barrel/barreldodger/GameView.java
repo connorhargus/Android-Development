@@ -1,6 +1,10 @@
 package com.barrel.barreldodger;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +13,7 @@ import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -24,8 +29,15 @@ public class GameView extends SurfaceView implements Runnable {
     Canvas canvas;
     private static boolean gameOver = false;
 
+    private TextView scoreView;
+    private TextView livesView;
+
+    private int screenX;
+    private int screenY;
+
     public GameView(Context context, int screenX, int screenY) {
         super(context);
+
         player = new Player(context, screenX, screenY);
         surfaceHolder = getHolder();
         paint = new Paint();
@@ -36,6 +48,10 @@ public class GameView extends SurfaceView implements Runnable {
         }
         // initialize touch and collision music
         mp_collision = MediaPlayer.create(context, R.raw.collision);
+        totalLives = 10;
+
+        this.screenX = screenX;
+        this.screenY = screenY;
     }
 
     @Override
@@ -57,11 +73,36 @@ public class GameView extends SurfaceView implements Runnable {
                 barrels[i].setX(-200);
                 totalLives--; // decreases available lives
                 mp_collision.start();
-                totalScore -= 50;
+//                totalScore -= 50;
                 if (totalScore < 0) { totalScore = 0; };
-                if (totalLives == 0){
-                    totalLives = 10;
-                    gameOver = true; // can go back to main menu
+                if (totalLives <= 0){
+                                        gameOver = true; // can go back to main menu
+
+                    ((Activity) getContext()).runOnUiThread(new Runnable() {
+                        public void run() {
+
+                            player.stopBoosting();
+                            player.update();
+
+                            CharSequence options[] = new CharSequence[] {"Play Again?"};
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setTitle("You scored " + totalScore + "!");
+                            builder.setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int choice) {
+                                    totalLives = 10;
+                                    totalScore = 0;
+                                    if (choice == 0) {
+                                        resume();
+                                    }
+                                }
+                            });
+                            builder.show();
+                        }
+                    });
+                    draw();
+                    pause();
                 }
             }
         }
@@ -89,8 +130,17 @@ public class GameView extends SurfaceView implements Runnable {
                         paint);
             }
 
+            paint.setTextSize(30);
+            canvas.drawText("Score: " + totalScore, screenX - 200, screenY - 20, paint);
+            canvas.drawText("Lives: " + totalLives, screenX - 350, screenY - 20, paint);
+
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    public void reset() {
+        totalLives = 10;
+        totalScore = 0;
     }
 
     // New frame every 17ms
@@ -105,6 +155,8 @@ public class GameView extends SurfaceView implements Runnable {
     // Pause game
     public void pause() {
         playing = false;
+        player.stopBoosting();
+        player.update();
         try {
             gameThread.join();
         } catch (InterruptedException e) {
@@ -117,6 +169,7 @@ public class GameView extends SurfaceView implements Runnable {
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
+        reset();
     }
 
     // Control boosting with touch
