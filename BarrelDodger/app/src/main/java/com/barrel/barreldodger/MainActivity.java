@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton buttonPlay;
     Button pauseMusic;
     MediaPlayer mp_background;
+//    public static boolean musicOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 if (mp_background.isPlaying()) {
+//                    musicOn = false;
                     mp_background.pause();
                     pauseMusic.setTextColor(Color.RED);
                     String message = "Music paused!";
                     Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                 } else {
+//                    musicOn = true;
                     mp_background.start();
                     pauseMusic.setTextColor(Color.WHITE);
                     String message = "Music resumed!";
@@ -61,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         // Play button starts PlayActivity
-        mp_background.pause();
-        pauseMusic.setTextColor(Color.RED);
+//        mp_background.pause();
+//        pauseMusic.setTextColor(Color.RED);
         String message = "Game started!";
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, PlayActivity.class));
