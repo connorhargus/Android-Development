@@ -10,7 +10,6 @@ import android.view.Display;
 public class PlayActivity extends AppCompatActivity {
 
     private GameView gameView;
-//    MediaPlayer mp_background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +26,6 @@ public class PlayActivity extends AppCompatActivity {
         gameView = new GameView(this, size.x, size.y);
         setContentView(gameView);
 
-        // create main menu music
-//        mp_background = MediaPlayer.create(this, R.raw.main);
-
-        // start background music
-//        mp_background.start();
-//        mp_background.setLooping(true);
     }
 
     // Pause game
@@ -48,10 +41,5 @@ public class PlayActivity extends AppCompatActivity {
         super.onResume();
         gameView.resume();
 
-//        if (MainActivity.musicOn) {
-//            mp_background.start();
-//        } else {
-//            mp_background.pause();
-//        }
     }
 }
